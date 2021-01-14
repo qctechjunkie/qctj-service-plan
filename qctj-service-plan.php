@@ -23,7 +23,7 @@ define( 'QCTJ_SSP_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QCTJ_SSP_URL', plugin_dir_url( __FILE__ ) );
 define( 'QCTJ_SSP_STORE_URL', 'https://qctechjunkie.com' );
 define( 'QCTJ_SSP_ITEM_NAME', 'QCTechJunkie - Service Support' );
-define( 'QCTJ_SSP_ITEM_ID', 1702 );
+define( 'QCTJ_SSP_ITEM_ID', 11234 );
 define( 'QCTJ_SSP_PLUGIN_LICENSE_PAGE', 'qctj-service' );
 
 /**
@@ -43,7 +43,6 @@ function load() {
 
 	if ( is_admin() ) {
 		require_once QCTJ_SSP_PATH . 'includes/admin/license/qctj-service-sl-license.php';
-		require_once QCTJ_SSP_PATH . 'includes/admin/settings.php';
 	}
 
 }

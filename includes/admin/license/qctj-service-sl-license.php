@@ -77,7 +77,7 @@ function qctj_netb_sanitize_license( $new ) {
 }
 
 /**
- * RCP - Netbilling Software License Activation
+ * QCTJ - Support Service License Activation
  *
  * @since  1.0.0
  * @return void
@@ -94,11 +94,11 @@ function qctj_service_activate_license() {
 		$api_params = array(
 			'edd_action' => 'activate_license',
 			'license'    => $license,
-			'item_name'  => urlencode( QCTJ_SSPITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( QCTJ_SSP_ITEM_NAME ), // the name of our product in EDD
 			'url'        => home_url()
 		);
 		// Call the custom API.
-		$response = wp_remote_post( QCTJ_SSPSTORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$response = wp_remote_post( QCTJ_SSP_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			if ( is_wp_error( $response ) ) {
@@ -127,7 +127,7 @@ function qctj_service_activate_license() {
 						$message = __( 'Your license is not active for this URL.' );
 						break;
 					case 'item_name_mismatch' :
-						$message = sprintf( __( 'This appears to be an invalid license key for %s.' ), QCTJ_SSPITEM_NAME );
+						$message = sprintf( __( 'This appears to be an invalid license key for %s.' ), QCTJ_SSP_ITEM_NAME );
 						break;
 					case 'no_activations_left':
 						$message = __( 'Your license key has reached its activation limit.' );
@@ -140,21 +140,21 @@ function qctj_service_activate_license() {
 		}
 		// Check if anything passed on a message constituting a failure
 		if ( ! empty( $message ) ) {
-			$base_url = admin_url( 'admin.php?page=' . QCTJ_SSPPLUGIN_LICENSE_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . QCTJ_SSP_PLUGIN_LICENSE_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 			wp_redirect( $redirect );
 			exit();
 		}
 		// $license_data->license will be either "valid" or "invalid"
 		update_option( 'qctj_service_license_status', $license_data->license );
-		wp_redirect( admin_url( 'admin.php?page=' . QCTJ_SSPPLUGIN_LICENSE_PAGE ) );
+		wp_redirect( admin_url( 'admin.php?page=' . QCTJ_SSP_PLUGIN_LICENSE_PAGE ) );
 		exit();
 	}
 }
 add_action('admin_init', 'qctj_service_activate_license');
 
 /**
- * RCP - Netbilling Software License Deactivation
+ * QCTJ - Support Service License Deactivation
  *
  * @since  1.0.0
  * @return void
@@ -171,11 +171,11 @@ function qctj_service_deactivate_license() {
 		$api_params = array(
 			'edd_action' => 'deactivate_license',
 			'license'    => $license,
-			'item_name'  => urlencode( QCTJ_SSPITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( QCTJ_SSP_ITEM_NAME ), // the name of our product in EDD
 			'url'        => home_url()
 		);
 		// Call the custom API.
-		$response = wp_remote_post( QCTJ_SSPSTORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$response = wp_remote_post( QCTJ_SSP_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			if ( is_wp_error( $response ) ) {
@@ -183,7 +183,7 @@ function qctj_service_deactivate_license() {
 			} else {
 				$message = __( 'An error occurred, please try again.' );
 			}
-			$base_url = admin_url( 'admin.php?page=' . QCTJ_SSPPLUGIN_LICENSE_PAGE );
+			$base_url = admin_url( 'admin.php?page=' . QCTJ_SSP_PLUGIN_LICENSE_PAGE );
 			$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
 			wp_redirect( $redirect );
 			exit();
@@ -194,7 +194,7 @@ function qctj_service_deactivate_license() {
 		if( $license_data->license == 'deactivated' ) {
 			delete_option( 'qctj_service_license_status' );
 		}
-		wp_redirect( admin_url( 'admin.php?page=' . QCTJ_SSPPLUGIN_LICENSE_PAGE ) );
+		wp_redirect( admin_url( 'admin.php?page=' . QCTJ_SSP_PLUGIN_LICENSE_PAGE ) );
 		exit();
 	}
 }
